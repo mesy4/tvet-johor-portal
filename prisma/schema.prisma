@@ -1,0 +1,660 @@
+// ============================================================
+// TVET JOHOR PORTAL — PRISMA SCHEMA
+// Covers: Users, RBAC, Profiles, Documents, Vacancies,
+//         Applications, Training Programs, CMS News, Audit Log
+// ============================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ─────────────────────────────────────────────────────────────
+// ENUMS
+// ─────────────────────────────────────────────────────────────
+
+enum UserRole {
+  SUPERADMIN         // System-level superadmin
+  ADMIN_ADTEC        // ADTEC JTM Kampus Pasir Gudang admin
+  ADMIN_JTDC         // Johor Talent Development Council admin
+  STUDENT            // Pelajar & Belia
+  EMPLOYER           // Majikan & Industri
+  PROVIDER           // Pusat Latihan (ADTEC & Training Providers)
+  OFFICIAL           // Pegawai Kerajaan (read-only dashboard)
+}
+
+enum AccountStatus {
+  ACTIVE
+  SUSPENDED
+  PENDING_VERIFICATION
+}
+
+enum DocumentType {
+  RESUME              // Student CV / Resume (PDF)
+  COVER_LETTER        // Student cover letter (PDF)
+  SSM                 // Employer: Suruhanjaya Syarikat Malaysia cert
+  MOF                 // Employer: Ministry of Finance registration
+  BANK_STATEMENT      // Employer: Bank statement
+  CERT_PROFESSIONAL   // Provider: professional certification
+  OTHER
+}
+
+enum DocumentStatus {
+  PENDING_REVIEW
+  REQUIRES_REVISION
+  APPROVED
+  REJECTED
+}
+
+enum VacancyStatus {
+  DRAFT
+  PUBLISHED
+  CLOSED
+  ARCHIVED
+}
+
+enum VacancyType {
+  FULL_TIME           // Sepenuh Masa
+  PART_TIME           // Separuh Masa
+  CONTRACT            // Kontrak
+  INTERNSHIP          // Latihan Industri
+  APPRENTICESHIP      // Perantisan
+  FREELANCE
+}
+
+enum EmploymentSector {
+  MANUFACTURING       // Pembuatan
+  CONSTRUCTION        // Pembinaan
+  SERVICES            // Perkhidmatan
+  TECHNOLOGY          // Teknologi
+  AGRICULTURE         // Pertanian
+  HOSPITALITY         // Hospitaliti
+  HEALTHCARE          // Penjagaan Kesihatan
+  LOGISTICS           // Logistik
+  ENERGY              // Tenaga
+  EDUCATION           // Pendidikan
+  GOVERNMENT          // Kerajaan
+  OTHER
+}
+
+enum ApplicationStatus {
+  SUBMITTED           // Submitted by student
+  IN_REVIEW           // Under review by employer/provider
+  REQUIRES_REVISION   // Admin/employer requests additional docs
+  SHORTLISTED         // Shortlisted for interview
+  APPROVED            // Offer extended / placement confirmed
+  REJECTED            // Application rejected
+  WITHDRAWN           // Withdrawn by student
+}
+
+enum TrainingStatus {
+  UPCOMING
+  OPEN_FOR_REGISTRATION
+  ONGOING
+  COMPLETED
+  CANCELLED
+}
+
+enum TrainingMode {
+  FULLY_FACE_TO_FACE   // Sepenuhnya Bersemuka
+  HYBRID               // Hibrid
+  ONLINE               // Dalam Talian
+}
+
+enum NewsCategory {
+  ANNOUNCEMENT        // Pengumuman
+  EVENT               // Acara
+  ACHIEVEMENT         // Pencapaian
+  CIRCULAR            // Pekeliling
+  INDUSTRY_NEWS       // Berita Industri
+  VACANCY_HIGHLIGHT   // Sorotan Kekosongan
+}
+
+enum NewsStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum AuditAction {
+  CREATE
+  UPDATE
+  DELETE
+  LOGIN
+  LOGOUT
+  UPLOAD
+  APPROVE
+  REJECT
+  REVISE
+  PUBLISH
+  UNPUBLISH
+}
+
+// ─────────────────────────────────────────────────────────────
+// CORE AUTH & USER
+// ─────────────────────────────────────────────────────────────
+
+/// Core user account — linked to Auth.js session model
+model User {
+  id                 String        @id @default(cuid())
+  email              String        @unique
+  emailVerified      DateTime?
+  passwordHash       String?       // nullable for OAuth-only users
+  name               String?
+  image              String?       // avatar URL (Supabase/S3)
+  role               UserRole      @default(STUDENT)
+  status             AccountStatus @default(PENDING_VERIFICATION)
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  lastLoginAt        DateTime?
+
+  // Auth.js adapter relations
+  accounts           Account[]
+  sessions           Session[]
+
+  // Profile relations (at most one per user)
+  studentProfile     StudentProfile?
+  employerProfile    EmployerProfile?
+  providerProfile    ProviderProfile?
+  officialProfile    OfficialProfile?
+  adminProfile       AdminProfile?
+
+  // Activity
+  uploadedDocuments  Document[]
+  auditLogs          AuditLog[]     @relation("ActorAuditLogs")
+  reviewedDocs       Document[]     @relation("ReviewedDocuments")
+  publishedNews      News[]         @relation("NewsAuthor")
+  reviewedApps       Application[]  @relation("ApplicationReviewer")
+
+  @@index([email])
+  @@index([role])
+  @@map("users")
+}
+
+/// Auth.js — OAuth provider accounts
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+/// Auth.js — Database sessions
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+/// Auth.js — Email verification tokens
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+// ─────────────────────────────────────────────────────────────
+// ROLE PROFILES
+// ─────────────────────────────────────────────────────────────
+
+/// Pelajar / Belia profile
+model StudentProfile {
+  id                  String    @id @default(cuid())
+  userId              String    @unique
+  icNumber            String?   @unique  // Malaysian NRIC
+  phone               String?
+  dateOfBirth         DateTime?
+  gender              String?
+  nationality         String?   @default("Malaysian")
+  address             String?
+  city                String?
+  state               String?   @default("Johor")
+  postcode            String?
+  educationLevel      String?   // SPM / STPM / Diploma / Degree
+  fieldOfStudy        String?
+  institution         String?
+  graduationYear      Int?
+  skills              String[]  @default([])
+  bio                 String?   @db.Text
+  linkedinUrl         String?
+  portfolioUrl        String?
+  isProfileComplete   Boolean   @default(false)
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  user                User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  documents           Document[]
+  applications        Application[]
+
+  @@index([userId])
+  @@map("student_profiles")
+}
+
+/// Majikan / Industri profile
+model EmployerProfile {
+  id                  String            @id @default(cuid())
+  userId              String            @unique
+  companyName         String
+  companyRegNo        String?           // SSM registration number
+  companyType         String?           // Sdn. Bhd. / Berhad / Partnership / etc.
+  sector              EmploymentSector  @default(OTHER)
+  industry            String?
+  companySize         String?           // 1-10 / 11-50 / 51-200 / 200+
+  foundedYear         Int?
+  website             String?
+  logoUrl             String?
+  description         String?           @db.Text
+  address             String?
+  city                String?
+  state               String?           @default("Johor")
+  postcode            String?
+  contactName         String?
+  contactPhone        String?
+  contactEmail        String?
+  isVerified          Boolean           @default(false)
+  verifiedAt          DateTime?
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+
+  user                User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  documents           Document[]    @relation("EmployerDocuments")
+  vacancies           Vacancy[]
+
+  @@index([userId])
+  @@index([companyName])
+  @@map("employer_profiles")
+}
+
+/// Pusat Latihan profile (ADTEC & Training Providers)
+model ProviderProfile {
+  id                  String    @id @default(cuid())
+  userId              String    @unique
+  institutionName     String
+  institutionCode     String?   // e.g. ADTEC-PG-001
+  accreditationBody   String?   // JPK / MQA / HRDC / etc.
+  accreditationNo     String?
+  address             String?
+  city                String?
+  state               String?   @default("Johor")
+  postcode            String?
+  contactName         String?
+  contactPhone        String?
+  website             String?
+  logoUrl             String?
+  description         String?   @db.Text
+  isVerified          Boolean   @default(false)
+  verifiedAt          DateTime?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  user                User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  trainingPrograms    TrainingProgram[]
+  vacancies           Vacancy[]         @relation("ProviderVacancies")
+
+  @@index([userId])
+  @@map("provider_profiles")
+}
+
+/// Pegawai Kerajaan profile (read-only dashboard access)
+model OfficialProfile {
+  id              String    @id @default(cuid())
+  userId          String    @unique
+  fullName        String
+  icNumber        String?   @unique
+  designation     String?   // e.g. Pegawai Teknologi Maklumat
+  department      String?   // e.g. Jabatan Tenaga Manusia
+  ministry        String?
+  staffId         String?   @unique
+  phone           String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("official_profiles")
+}
+
+/// Admin profile (ADTEC / JTDC / Superadmin)
+model AdminProfile {
+  id              String    @id @default(cuid())
+  userId          String    @unique
+  fullName        String
+  staffId         String?   @unique
+  department      String?
+  entity          String?   // "ADTEC_PG" | "JTDC" | "SYSTEM"
+  phone           String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("admin_profiles")
+}
+
+// ─────────────────────────────────────────────────────────────
+// DOCUMENT MANAGEMENT
+// ─────────────────────────────────────────────────────────────
+
+/// Cloud-stored documents (S3 / Supabase Storage)
+model Document {
+  id              String          @id @default(cuid())
+  uploaderId      String
+  fileName        String          // original filename
+  fileKey         String          @unique  // S3 / Supabase object key
+  fileUrl         String          // signed or public URL
+  fileSizeBytes   Int
+  mimeType        String          // application/pdf | image/jpeg | image/png
+  documentType    DocumentType
+  status          DocumentStatus  @default(PENDING_REVIEW)
+  reviewNote      String?         @db.Text   // feedback on REQUIRES_REVISION/REJECTED
+  reviewedBy      String?
+  reviewedAt      DateTime?
+  expiresAt       DateTime?       // optional expiry for bank statements etc.
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  uploader        User            @relation(fields: [uploaderId], references: [id], onDelete: Cascade)
+  reviewer        User?           @relation("ReviewedDocuments", fields: [reviewedBy], references: [id])
+
+  // Nullable links — a document belongs to ONE type of entity
+  studentProfileId    String?
+  employerProfileId   String?
+
+  studentProfile  StudentProfile?  @relation(fields: [studentProfileId], references: [id])
+  employerProfile EmployerProfile? @relation("EmployerDocuments", fields: [employerProfileId], references: [id])
+
+  @@index([uploaderId])
+  @@index([documentType])
+  @@index([status])
+  @@map("documents")
+}
+
+// ─────────────────────────────────────────────────────────────
+// JOB VACANCIES
+// ─────────────────────────────────────────────────────────────
+
+model Vacancy {
+  id                  String            @id @default(cuid())
+  title               String
+  slug                String            @unique
+  description         String            @db.Text
+  requirements        String            @db.Text
+  responsibilities    String            @db.Text
+  benefits            String?           @db.Text
+  vacancyType         VacancyType       @default(FULL_TIME)
+  sector              EmploymentSector  @default(OTHER)
+  location            String
+  state               String            @default("Johor")
+  salaryMin           Int?              // in MYR
+  salaryMax           Int?              // in MYR
+  salaryNegotiable    Boolean           @default(false)
+  positions           Int               @default(1)  // number of openings
+  applicationDeadline DateTime?
+  status              VacancyStatus     @default(DRAFT)
+  viewCount           Int               @default(0)
+  isFeatured          Boolean           @default(false)
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+  publishedAt         DateTime?
+  closedAt            DateTime?
+
+  // Owner — either an employer OR a training provider (ADTEC)
+  employerProfileId   String?
+  providerProfileId   String?
+
+  employer            EmployerProfile?  @relation(fields: [employerProfileId], references: [id])
+  provider            ProviderProfile?  @relation("ProviderVacancies", fields: [providerProfileId], references: [id])
+  applications        Application[]
+  categories          VacancyCategory[]
+
+  @@index([status])
+  @@index([sector])
+  @@index([state])
+  @@index([applicationDeadline])
+  @@map("vacancies")
+}
+
+/// Taxonomy for vacancy categorisation (M:N)
+model Category {
+  id          String            @id @default(cuid())
+  name        String            @unique   // e.g. "Kejuruteraan Elektrik"
+  slug        String            @unique
+  description String?
+  createdAt   DateTime          @default(now())
+
+  vacancies   VacancyCategory[]
+  programs    ProgramCategory[]
+
+  @@map("categories")
+}
+
+model VacancyCategory {
+  vacancyId   String
+  categoryId  String
+
+  vacancy     Vacancy  @relation(fields: [vacancyId], references: [id], onDelete: Cascade)
+  category    Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([vacancyId, categoryId])
+  @@map("vacancy_categories")
+}
+
+// ─────────────────────────────────────────────────────────────
+// JOB APPLICATIONS
+// ─────────────────────────────────────────────────────────────
+
+model Application {
+  id              String            @id @default(cuid())
+  vacancyId       String
+  studentId       String            // StudentProfile.id
+  coverLetter     String?           @db.Text  // optional inline cover letter text
+  status          ApplicationStatus @default(SUBMITTED)
+  revisionNote    String?           @db.Text  // note when REQUIRES_REVISION
+  reviewerId      String?
+  reviewedAt      DateTime?
+  submittedAt     DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  vacancy         Vacancy           @relation(fields: [vacancyId], references: [id], onDelete: Cascade)
+  student         StudentProfile    @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  reviewer        User?             @relation("ApplicationReviewer", fields: [reviewerId], references: [id])
+
+  @@unique([vacancyId, studentId])  // one application per vacancy per student
+  @@index([status])
+  @@index([studentId])
+  @@index([vacancyId])
+  @@map("applications")
+}
+
+// ─────────────────────────────────────────────────────────────
+// TRAINING PROGRAMS
+// ─────────────────────────────────────────────────────────────
+
+model TrainingProgram {
+  id                  String          @id @default(cuid())
+  providerId          String
+  title               String
+  slug                String          @unique
+  description         String          @db.Text
+  objectives          String?         @db.Text
+  targetAudience      String?
+  duration            String?         // e.g. "3 Bulan", "40 Jam"
+  mode                TrainingMode    @default(FULLY_FACE_TO_FACE)
+  venue               String?
+  state               String          @default("Johor")
+  fee                 Decimal?        @db.Decimal(10, 2)
+  isFunded            Boolean         @default(false)  // HRD Corp / TVET funded
+  fundingBody         String?         // HRD Corp, MARA, JTM, etc.
+  certificationName   String?         // cert issued on completion
+  certificationBody   String?         // JPK / HRDC / MQA
+  maxParticipants     Int?
+  startDate           DateTime?
+  endDate             DateTime?
+  registrationDeadline DateTime?
+  status              TrainingStatus  @default(UPCOMING)
+  viewCount           Int             @default(0)
+  isFeatured          Boolean         @default(false)
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
+
+  provider            ProviderProfile @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  enrollments         Enrollment[]
+  categories          ProgramCategory[]
+
+  @@index([status])
+  @@index([providerId])
+  @@index([startDate])
+  @@map("training_programs")
+}
+
+model ProgramCategory {
+  programId   String
+  categoryId  String
+
+  program     TrainingProgram @relation(fields: [programId], references: [id], onDelete: Cascade)
+  category    Category        @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([programId, categoryId])
+  @@map("program_categories")
+}
+
+/// Training program enrollment (talent tracking for providers)
+model Enrollment {
+  id          String    @id @default(cuid())
+  programId   String
+  userId      String
+  enrolledAt  DateTime  @default(now())
+  completedAt DateTime?
+  grade       String?
+  certIssued  Boolean   @default(false)
+  certUrl     String?   // S3/Supabase key to issued certificate PDF
+
+  program     TrainingProgram @relation(fields: [programId], references: [id], onDelete: Cascade)
+
+  @@unique([programId, userId])
+  @@index([userId])
+  @@map("enrollments")
+}
+
+// ─────────────────────────────────────────────────────────────
+// CMS — NEWS & ANNOUNCEMENTS
+// ─────────────────────────────────────────────────────────────
+
+model News {
+  id            String       @id @default(cuid())
+  authorId      String
+  title         String
+  slug          String       @unique
+  excerpt       String?      @db.Text   // short summary for cards
+  content       String       @db.Text   // rich-text HTML from editor
+  featuredImage String?      // S3/Supabase URL
+  category      NewsCategory @default(ANNOUNCEMENT)
+  status        NewsStatus   @default(DRAFT)
+  tags          String[]     @default([])
+  viewCount     Int          @default(0)
+  isFeatured    Boolean      @default(false)
+  publishedAt   DateTime?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  author        User         @relation("NewsAuthor", fields: [authorId], references: [id])
+
+  @@index([status])
+  @@index([category])
+  @@index([publishedAt])
+  @@map("news")
+}
+
+// ─────────────────────────────────────────────────────────────
+// PUBLIC INQUIRY / Q&A FORM
+// ─────────────────────────────────────────────────────────────
+
+enum InquiryStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
+model Inquiry {
+  id          String        @id @default(cuid())
+  name        String
+  email       String
+  phone       String?
+  subject     String
+  message     String        @db.Text
+  status      InquiryStatus @default(OPEN)
+  assignedTo  String?       // admin User.id
+  response    String?       @db.Text
+  respondedAt DateTime?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([status])
+  @@index([email])
+  @@map("inquiries")
+}
+
+// ─────────────────────────────────────────────────────────────
+// AUDIT LOG
+// ─────────────────────────────────────────────────────────────
+
+model AuditLog {
+  id          String      @id @default(cuid())
+  actorId     String
+  action      AuditAction
+  entityType  String      // "User" | "Vacancy" | "Document" | "Application" | etc.
+  entityId    String?
+  description String?     @db.Text
+  ipAddress   String?
+  userAgent   String?
+  createdAt   DateTime    @default(now())
+
+  actor       User        @relation("ActorAuditLogs", fields: [actorId], references: [id], onDelete: Cascade)
+
+  @@index([actorId])
+  @@index([entityType, entityId])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
+
+// ─────────────────────────────────────────────────────────────
+// SYSTEM SETTINGS (key-value store for CMS config)
+// ─────────────────────────────────────────────────────────────
+
+model SystemSetting {
+  key         String   @id
+  value       String   @db.Text
+  description String?
+  updatedAt   DateTime @updatedAt
+
+  @@map("system_settings")
+}
