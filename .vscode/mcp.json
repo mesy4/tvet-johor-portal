@@ -1,0 +1,24 @@
+{
+  "servers": {
+    "tblite-log-parser": {
+      "type": "stdio",
+      "command": "python3",
+      "args": [
+        "c:/Users/zuraidy/.vscode/extensions/css-icw-soc-dv.tblite-copilot-0.6.0/mcp-servers/log_parser/server.py"
+      ],
+      "env": {
+        "PYTHONDONTWRITEBYTECODE": "1"
+      }
+    },
+    "tblite-cov-report": {
+      "type": "stdio",
+      "command": "python3",
+      "args": [
+        "c:/Users/zuraidy/.vscode/extensions/css-icw-soc-dv.tblite-copilot-0.6.0/mcp-servers/cov_report/server.py"
+      ],
+      "env": {
+        "PYTHONDONTWRITEBYTECODE": "1"
+      }
+    }
+  }
+}

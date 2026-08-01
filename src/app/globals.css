@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* ── Shadcn/UI CSS variables mapped to Johor Navy / Red palette ── */
+    --background:   0 0% 100%;
+    --foreground:   215 100% 10%;   /* near-black navy */
+
+    --card:         0 0% 100%;
+    --card-foreground: 215 100% 10%;
+
+    --popover:      0 0% 100%;
+    --popover-foreground: 215 100% 10%;
+
+    --primary:      215 100% 20%;   /* johor-navy #003366 */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary:    215 30% 94%;
+    --secondary-foreground: 215 100% 20%;
+
+    --muted:        215 20% 95%;
+    --muted-foreground: 215 20% 45%;
+
+    --accent:       0 100% 40%;     /* johor-red #CC0001 */
+    --accent-foreground: 0 0% 100%;
+
+    --destructive:  0 84% 40%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border:       215 20% 88%;
+    --input:        215 20% 88%;
+    --ring:         215 100% 20%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background:   215 40% 8%;
+    --foreground:   215 20% 95%;
+
+    --card:         215 40% 10%;
+    --card-foreground: 215 20% 95%;
+
+    --popover:      215 40% 10%;
+    --popover-foreground: 215 20% 95%;
+
+    --primary:      215 80% 60%;
+    --primary-foreground: 215 100% 10%;
+
+    --secondary:    215 30% 18%;
+    --secondary-foreground: 215 20% 90%;
+
+    --muted:        215 30% 16%;
+    --muted-foreground: 215 20% 60%;
+
+    --accent:       0 80% 55%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive:  0 70% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border:       215 30% 18%;
+    --input:        215 30% 18%;
+    --ring:         215 80% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+}
