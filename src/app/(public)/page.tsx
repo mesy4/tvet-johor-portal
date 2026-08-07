@@ -3,8 +3,9 @@ import { HeroSection }  from "@/components/home/hero-section";
 import { StatsBar }     from "@/components/home/stats-bar";
 import { RoleGateway }  from "@/components/home/role-gateway";
 import { WhyTvet }      from "@/components/home/why-tvet";
-import { NewsGrid }     from "@/components/home/news-grid";
-import { InquiryForm }  from "@/components/home/inquiry-form";
+import { NewsGrid }         from "@/components/home/news-grid";
+import { PartnersSection }  from "@/components/home/partners-section";
+import { InquiryForm }      from "@/components/home/inquiry-form";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -36,7 +37,10 @@ export default function HomePage() {
         <NewsGrid />
       </Suspense>
 
-      {/* 6. Inquiry / Contact section */}
+      {/* 6. Rakan Strategik / Partners logos */}
+      <PartnersSection />
+
+      {/* 7. Inquiry / Contact section */}
       <section className="bg-gray-50 py-20" aria-labelledby="inquiry-heading">
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-2xl">
