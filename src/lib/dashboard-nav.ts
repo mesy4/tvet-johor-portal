@@ -24,39 +24,28 @@ type NavItem = {
 export const DASHBOARD_NAV: Record<string, NavItem[]> = {
   // ── Admin (all three admin roles share the same nav) ─────
   ADMIN: [
-    { label: "Papan Pemuka",      href: "/dashboard/admin",           icon: LayoutDashboard },
-    { label: "Pengurusan Pengguna", href: "/dashboard/admin/users",   icon: Users },
-    { label: "Semakan Dokumen",   href: "/dashboard/admin/documents", icon: FileText },
-    { label: "Iklan Kerja",       href: "/dashboard/admin/vacancies", icon: Briefcase },
-    { label: "Pengurusan Berita", href: "/dashboard/admin/news",      icon: Newspaper },
-    { label: "Tetapan",           href: "/dashboard/admin/settings",  icon: Settings },
+    { label: "Papan Pemuka",        href: "/dashboard/admin",           icon: LayoutDashboard },
+    { label: "Pengurusan Pengguna", href: "/dashboard/admin/users",     icon: Users },
+    { label: "Semakan Dokumen",     href: "/dashboard/admin/documents", icon: FileText },
+    { label: "Pengurusan Berita",   href: "/dashboard/admin/news",      icon: Newspaper },
   ],
   // ── Employer ─────────────────────────────────────────────
   EMPLOYER: [
-    { label: "Papan Pemuka",   href: "/dashboard/employer",              icon: LayoutDashboard },
-    { label: "Iklan Kerja",    href: "/dashboard/employer/vacancies",    icon: Briefcase },
-    { label: "Pemohon",        href: "/dashboard/employer/applicants",   icon: Users },
-    { label: "Dokumen",        href: "/dashboard/employer/documents",    icon: FileText },
+    { label: "Papan Pemuka", href: "/dashboard/employer",           icon: LayoutDashboard },
+    { label: "Dokumen",      href: "/dashboard/employer/documents", icon: FileText },
   ],
   // ── Student ──────────────────────────────────────────────
   STUDENT: [
-    { label: "Papan Pemuka",   href: "/dashboard/student",              icon: LayoutDashboard },
-    { label: "Permohonan Saya", href: "/dashboard/student/applications", icon: ClipboardList },
-    { label: "Dokumen",        href: "/dashboard/student/documents",    icon: FileText },
-    { label: "Profil",         href: "/dashboard/student/profile",      icon: GraduationCap },
+    { label: "Papan Pemuka", href: "/dashboard/student",           icon: LayoutDashboard },
+    { label: "Dokumen",      href: "/dashboard/student/documents", icon: FileText },
   ],
   // ── Provider ─────────────────────────────────────────────
   PROVIDER: [
-    { label: "Papan Pemuka",   href: "/dashboard/provider",             icon: LayoutDashboard },
-    { label: "Program Latihan", href: "/dashboard/provider/programs",   icon: BookOpen },
-    { label: "Iklan Kerja",    href: "/dashboard/provider/vacancies",   icon: Briefcase },
-    { label: "Profil",         href: "/dashboard/provider/profile",     icon: Building2 },
+    { label: "Papan Pemuka", href: "/dashboard/provider", icon: LayoutDashboard },
   ],
   // ── Government Official ───────────────────────────────────
   OFFICIAL: [
-    { label: "Papan Pemuka",   href: "/dashboard/official",             icon: LayoutDashboard },
-    { label: "Analitik TVET",  href: "/dashboard/official/analytics",   icon: BarChart3 },
-    { label: "Laporan",        href: "/dashboard/official/reports",     icon: ClipboardList },
+    { label: "Papan Pemuka", href: "/dashboard/official", icon: LayoutDashboard },
   ],
 };
 

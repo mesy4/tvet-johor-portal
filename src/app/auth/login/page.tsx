@@ -7,11 +7,13 @@ import { loginAction } from "@/app/actions/auth";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
+import { getRedirectForRole } from "@/lib/rbac";
+import type { UserRole } from "@prisma/client";
 
 export default function LoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") ?? "/dashboard";
+  const callbackUrl = searchParams.get("callbackUrl");
   const verified = searchParams.get("verified");
   const [serverError, setServerError] = useState<string | null>(null);
 
@@ -32,9 +34,21 @@ export default function LoginPage() {
       setServerError(result.error ?? "Ralat tidak dijangka.");
       return;
     }
-    // Redirect to role-appropriate dashboard
-    router.push(callbackUrl);
-    router.refresh();
+    // After successful login, fetch session to determine role-based redirect
+    try {
+      const sessionRes = await fetch("/api/auth/session");
+      const session = await sessionRes.json();
+      const role = session?.user?.role as UserRole | undefined;
+      // If callbackUrl is provided (e.g., from middleware redirect), use it
+      // Otherwise redirect to role-appropriate dashboard
+      const target = callbackUrl ?? (role ? getRedirectForRole(role) : "/");
+      router.push(target);
+      router.refresh();
+    } catch {
+      // Fallback: use callbackUrl if available, otherwise redirect to home
+      router.push(callbackUrl ?? "/");
+      router.refresh();
+    }
   }
 
   return (

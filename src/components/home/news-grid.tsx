@@ -6,21 +6,26 @@ import { prisma } from "@/lib/prisma";
 
 // Fetch latest published news (Server Component — direct DB call)
 async function getLatestNews() {
-  return prisma.news.findMany({
-    where:   { status: "PUBLISHED" },
-    orderBy: { publishedAt: "desc" },
-    take:    6,
-    select: {
-      id:           true,
-      title:        true,
-      slug:         true,
-      excerpt:      true,
-      featuredImage: true,
-      category:     true,
-      publishedAt:  true,
-      isFeatured:   true,
-    },
-  });
+  try {
+    return await prisma.news.findMany({
+      where:   { status: "PUBLISHED" },
+      orderBy: { publishedAt: "desc" },
+      take:    6,
+      select: {
+        id:           true,
+        title:        true,
+        slug:         true,
+        excerpt:      true,
+        featuredImage: true,
+        category:     true,
+        publishedAt:  true,
+        isFeatured:   true,
+      },
+    });
+  } catch {
+    // Return empty array if DB is unavailable (e.g., PostgreSQL not running)
+    return [];
+  }
 }
 
 const CATEGORY_LABELS: Record<string, string> = {

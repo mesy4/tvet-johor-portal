@@ -1,5 +1,3 @@
-"use server";
-
 import { requireRole }          from "@/lib/session";
 import { prisma }               from "@/lib/prisma";
 import { DocumentStatusBadge }  from "@/components/upload/document-status-badge";
