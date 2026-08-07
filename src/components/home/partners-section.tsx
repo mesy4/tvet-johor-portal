@@ -31,7 +31,7 @@ const PARTNERS = [
 const SCROLLING_LIST = [...PARTNERS, ...PARTNERS];
 
 // ---------------------------------------------------------------------------
-// Best‑practice Partners / "Rakan Strategik" section
+// Partners / "Rakan Strategik" — infinite CSS carousel (all screen sizes)
 // ---------------------------------------------------------------------------
 export function PartnersSection() {
   return (
@@ -56,45 +56,24 @@ export function PartnersSection() {
           </p>
         </div>
 
-        {/* ---- Desktop / tablet: static grid ---- */}
-        <ul
-          className="hidden flex-wrap items-center justify-center gap-8 sm:flex"
-          role="list"
-        >
-          {PARTNERS.map((partner) => (
-            <li
-              key={partner.name}
-              className="group flex h-24 w-44 items-center justify-center rounded-xl border border-gray-100 bg-gray-50 p-4 shadow-sm transition-all hover:border-johor-gold/40 hover:shadow-md"
-              title={partner.name}
-            >
-              <Image
-                src={partner.logo}
-                alt={partner.name}
-                width={160}
-                height={64}
-                className="max-h-16 w-auto object-contain opacity-70 transition-opacity group-hover:opacity-100"
-                loading="lazy"
-                // Graceful fallback – Next.js will show alt text if image fails
-              />
-            </li>
-          ))}
-        </ul>
-
-        {/* ---- Mobile: infinite marquee (CSS only, no JS) ---- */}
-        <div className="relative overflow-hidden sm:hidden" aria-hidden="true">
-          <ul className="flex w-max animate-partners-scroll gap-6" role="list">
+        {/* Infinite marquee — works on all screen sizes */}
+        <div className="relative overflow-hidden">
+          <ul
+            className="flex w-max animate-partners-scroll gap-6 sm:gap-10"
+            role="list"
+          >
             {SCROLLING_LIST.map((partner, idx) => (
               <li
                 key={`${partner.name}-${idx}`}
-                className="flex h-20 w-36 shrink-0 items-center justify-center rounded-xl border border-gray-100 bg-gray-50 p-3 shadow-sm"
+                className="flex h-20 w-36 shrink-0 items-center justify-center rounded-xl border border-gray-100 bg-gray-50 p-3 shadow-sm transition-shadow hover:shadow-md sm:h-24 sm:w-44"
                 title={partner.name}
               >
                 <Image
                   src={partner.logo}
                   alt={partner.name}
-                  width={120}
-                  height={48}
-                  className="max-h-12 w-auto object-contain opacity-70"
+                  width={160}
+                  height={64}
+                  className="max-h-12 w-auto object-contain opacity-70 transition-opacity hover:opacity-100 sm:max-h-16"
                   loading="lazy"
                 />
               </li>
@@ -102,8 +81,8 @@ export function PartnersSection() {
           </ul>
 
           {/* Gradient fades on edges for a polished look */}
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-white to-transparent" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-white to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-white to-transparent sm:w-12" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-white to-transparent sm:w-12" />
         </div>
       </div>
     </section>
