@@ -57,20 +57,11 @@ export default async function EmployerDashboardPage() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="flex items-start justify-between">
-        <div>
-          <h1 className="font-heading text-2xl font-bold text-gray-900">
-            Selamat Datang, {profile.companyName}
-          </h1>
-          <p className="mt-1 text-sm text-gray-500">Urus iklan kerja dan semak pemohon anda</p>
-        </div>
-        <Link
-          href="/dashboard/employer/vacancies/new"
-          className="hidden sm:flex items-center gap-2 rounded-xl bg-johor-navy-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-johor-navy-600"
-        >
-          <PlusCircle className="h-4 w-4" />
-          Siar Iklan Baru
-        </Link>
+      <div>
+        <h1 className="font-heading text-2xl font-bold text-gray-900">
+          Selamat Datang, {profile.companyName}
+        </h1>
+        <p className="mt-1 text-sm text-gray-500">Urus iklan kerja dan semak pemohon anda</p>
       </div>
 
       {/* Verification warning */}
@@ -100,21 +91,12 @@ export default async function EmployerDashboardPage() {
       <div className="rounded-xl border border-gray-100 bg-white p-6 shadow-sm">
         <div className="mb-5 flex items-center justify-between">
           <h2 className="font-heading text-base font-semibold text-gray-800">Iklan Kerja Terkini</h2>
-          <Link href="/dashboard/employer/vacancies" className="text-xs text-johor-navy-600 hover:underline">
-            Lihat semua →
-          </Link>
         </div>
 
         {recentVacancies.length === 0 ? (
           <div className="flex flex-col items-center gap-3 py-10 text-center">
             <Briefcase className="h-10 w-10 text-gray-200" />
             <p className="text-sm text-gray-400">Belum ada iklan kerja.</p>
-            <Link
-              href="/dashboard/employer/vacancies/new"
-              className="mt-1 rounded-lg bg-johor-navy-500 px-4 py-2 text-sm font-medium text-white hover:bg-johor-navy-600"
-            >
-              Siar Iklan Pertama
-            </Link>
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -145,13 +127,6 @@ export default async function EmployerDashboardPage() {
                       </span>
                     </td>
                     <td className="py-3">
-                      <Link
-                        href={`/dashboard/employer/vacancies/${vac.id}`}
-                        className="text-johor-navy-600 hover:underline"
-                        aria-label={`Lihat ${vac.title}`}
-                      >
-                        <Eye className="h-4 w-4" />
-                      </Link>
                     </td>
                   </tr>
                 ))}

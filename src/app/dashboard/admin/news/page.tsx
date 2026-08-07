@@ -38,18 +38,9 @@ export default async function AdminNewsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="font-heading text-2xl font-bold text-gray-900">Pengurusan Berita</h1>
-          <p className="mt-1 text-sm text-gray-500">{newsItems.length} artikel</p>
-        </div>
-        <Link
-          href="/dashboard/admin/news/new"
-          className="flex items-center gap-2 rounded-xl bg-johor-navy-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-johor-navy-600"
-        >
-          <PlusCircle className="h-4 w-4" />
-          Artikel Baru
-        </Link>
+      <div>
+        <h1 className="font-heading text-2xl font-bold text-gray-900">Pengurusan Berita</h1>
+        <p className="mt-1 text-sm text-gray-500">{newsItems.length} artikel</p>
       </div>
 
       {newsItems.length === 0 ? (
@@ -93,14 +84,7 @@ export default async function AdminNewsPage() {
                     <td className="px-5 py-3.5 hidden md:table-cell text-gray-500">
                       {item.publishedAt ? formatDate(item.publishedAt) : formatDate(item.createdAt)}
                     </td>
-                    <td className="px-5 py-3.5">
-                      <Link
-                        href={`/dashboard/admin/news/${item.id}/edit`}
-                        className="rounded-lg border border-johor-navy-200 px-3 py-1 text-xs font-medium text-johor-navy-600 hover:bg-johor-navy-50"
-                      >
-                        Edit
-                      </Link>
-                    </td>
+                    <td className="px-5 py-3.5"></td>
                   </tr>
                 ))}
               </tbody>
