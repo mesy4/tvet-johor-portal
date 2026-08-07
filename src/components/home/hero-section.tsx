@@ -56,7 +56,7 @@ export function HeroSection() {
           className="mx-auto max-w-4xl font-heading text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl"
         >
           Membangunkan Kemahiran.{" "}
-          <span className="text-johor-gold">Memperkasa Johor.</span>
+          <span className="text-johor-red-400">Memperkasa Johor.</span>
         </h1>
 
         <p className="mx-auto mt-6 max-w-2xl text-lg text-white/70">
