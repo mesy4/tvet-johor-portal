@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,122 +13,11 @@ const SEARCH_TABS = [
 
 type SearchTab = (typeof SEARCH_TABS)[number]["id"];
 
-// ── Animated canvas background ──────────────────────────────
-// Draws flowing geometric waves in Johor navy/red tones
-function useCanvasBackground(canvasRef: React.RefObject<HTMLCanvasElement | null>) {
-  const animRef = useRef<number>(0);
-  const timeRef = useRef(0);
-
-  const draw = useCallback(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    const w = canvas.width;
-    const h = canvas.height;
-    const t = timeRef.current;
-
-    // Clear
-    ctx.clearRect(0, 0, w, h);
-
-    // Dark navy base
-    const baseGrad = ctx.createLinearGradient(0, 0, w, h);
-    baseGrad.addColorStop(0, "#000a14");   // johor-navy-900
-    baseGrad.addColorStop(0.5, "#001f3d"); // johor-navy-700
-    baseGrad.addColorStop(1, "#002952");   // johor-navy-600
-    ctx.fillStyle = baseGrad;
-    ctx.fillRect(0, 0, w, h);
-
-    // Animated flowing waves (sine-based)
-    for (let wave = 0; wave < 3; wave++) {
-      const offsetY = wave * (h / 3);
-      const speed = 0.4 + wave * 0.2;
-      const amplitude = h * 0.12 + wave * 10;
-
-      ctx.beginPath();
-      ctx.moveTo(0, h);
-
-      for (let x = 0; x <= w; x += 4) {
-        const dx = x / w;
-        const y =
-          offsetY +
-          Math.sin(x * 0.008 + t * speed + wave * 2.1) * amplitude * 0.5 +
-          Math.cos(x * 0.015 + t * speed * 0.7) * amplitude * 0.3;
-        ctx.lineTo(x, y);
-      }
-
-      ctx.lineTo(w, h);
-      ctx.closePath();
-
-      // Red-tinted wave fills (subtle)
-      const waveGrad = ctx.createLinearGradient(0, offsetY - amplitude, 0, offsetY + amplitude);
-      if (wave === 0) {
-        waveGrad.addColorStop(0, "rgba(204, 0, 1, 0.08)");  // johor-red
-        waveGrad.addColorStop(1, "rgba(204, 0, 1, 0.02)");
-      } else if (wave === 1) {
-        waveGrad.addColorStop(0, "rgba(0, 51, 102, 0.15)");  // johor-navy
-        waveGrad.addColorStop(1, "rgba(0, 31, 61, 0.05)");
-      } else {
-        waveGrad.addColorStop(0, "rgba(204, 0, 1, 0.06)");
-        waveGrad.addColorStop(1, "rgba(0, 10, 20, 0.01)");
-      }
-      ctx.fillStyle = waveGrad;
-      ctx.fill();
-    }
-
-    // Floating particles (subtle dots)
-    for (let i = 0; i < 25; i++) {
-      const px = ((i * 137.5 + t * 12 * (0.5 + i * 0.02)) % w);
-      const py = ((i * 73 + Math.sin(t + i) * 40) % h);
-      const alpha = 0.15 + Math.sin(t * 2 + i) * 0.1;
-      const size = 1 + (i % 3);
-
-      ctx.beginPath();
-      ctx.arc(px, py, size, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
-      ctx.fill();
-    }
-
-    timeRef.current += 0.016; // ~60fps delta
-    animRef.current = requestAnimationFrame(draw);
-  }, [canvasRef]);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const resize = () => {
-      const rect = canvas.parentElement!.getBoundingClientRect();
-      const dpr = window.devicePixelRatio || 1;
-      canvas.width = rect.width * dpr;
-      canvas.height = rect.height * dpr;
-      canvas.style.width = `${rect.width}px`;
-      canvas.style.height = `${rect.height}px`;
-      const ctx = canvas.getContext("2d");
-      if (ctx) ctx.scale(dpr, dpr);
-    };
-
-    resize();
-    window.addEventListener("resize", resize);
-
-    animRef.current = requestAnimationFrame(draw);
-
-    return () => {
-      window.removeEventListener("resize", resize);
-      if (animRef.current) cancelAnimationFrame(animRef.current);
-    };
-  }, [draw, canvasRef]);
-}
-
 // ── Hero Section ────────────────────────────────────────────
 export function HeroSection() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<SearchTab>("vacancy");
   const [query, setQuery]         = useState("");
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useCanvasBackground(canvasRef);
 
   function handleSearch(e: React.FormEvent) {
     e.preventDefault();
@@ -141,12 +30,21 @@ export function HeroSection() {
       className="relative overflow-hidden bg-johor-navy-900 pb-28 pt-20"
       aria-labelledby="hero-heading"
     >
-      {/* ── Animated Canvas Background ──────────────────────── */}
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 z-0 h-full w-full"
-        aria-hidden="true"
-      />
+      {/* ── Video Background ────────────────────────────────── */}
+      <div className="absolute inset-0 z-0" aria-hidden="true">
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          className="h-full w-full object-cover"
+        >
+          <source src="/videos/tvet-hero.mp4" type="video/mp4" />
+        </video>
+        {/* Dark navy overlay for text readability */}
+        <div className="absolute inset-0 bg-johor-navy-900/70" />
+      </div>
 
       {/* ── Decorative blobs ────────────────────────────────── */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-10 overflow-hidden">
