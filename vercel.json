@@ -1,9 +1,9 @@
 {
-  "buildCommand": "next build",
+  "buildCommand": "prisma generate && prisma migrate deploy && next build",
   "installCommand": "npm install",
   "framework": "nextjs",
   "regions": ["sin1"],
   "env": {
-    "NEXTAUTH_URL": "https://your-project.vercel.app"
+    "NEXTAUTH_URL": "https://tvet-johor-portal-main.vercel.app"
   }
 }
