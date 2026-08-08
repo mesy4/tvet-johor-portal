@@ -43,7 +43,7 @@ export default async function StudentDashboardPage() {
         take:    5,
         select: {
           id: true, status: true, submittedAt: true, revisionNote: true,
-          vacancy: { select: { id: true, title: true, employerProfile: { select: { companyName: true } } } },
+          vacancy: { select: { id: true, title: true, employer: { select: { companyName: true } } } },
         },
       }),
     ]);
@@ -138,7 +138,7 @@ export default async function StudentDashboardPage() {
                     <div className="min-w-0">
                       <p className="truncate text-sm font-medium text-gray-800">{app.vacancy.title}</p>
                       <p className="text-xs text-gray-400">
-                        {app.vacancy.employerProfile?.companyName ?? "Pusat Latihan"} · {formatDate(app.submittedAt)}
+                        {app.vacancy.employer?.companyName ?? "Pusat Latihan"} · {formatDate(app.submittedAt)}
                       </p>
                     </div>
                     <span className={`shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-semibold ${statusCfg.color}`}>

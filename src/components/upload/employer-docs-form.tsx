@@ -79,7 +79,7 @@ export function EmployerDocsForm({ onSuccess }: EmployerDocsFormProps) {
         delete next[field];
         return next;
       });
-      // @ts-expect-error — intentionally clearing optional nested field
+      // intentionally clearing optional nested field
       setValue(field, undefined, { shouldValidate: false });
       setSubmitResult(null);
     };
@@ -214,10 +214,9 @@ export function EmployerDocsForm({ onSuccess }: EmployerDocsFormProps) {
                 onCleared={handleFileCleared(field)}
               />
 
-              {/* @ts-expect-error — dynamic nested errors */}
+              {/* dynamic nested errors */}
               {errors[field] && (
                 <p className="mt-1 text-xs text-johor-red-500">
-                  {/* @ts-expect-error */}
                   {errors[field]?.fileKey?.message ?? errors[field]?.message}
                 </p>
               )}

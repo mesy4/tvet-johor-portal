@@ -1,10 +1,10 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import Link from "next/link";
 
-export default function VerifyPage() {
+function VerifyContent() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
   const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
@@ -19,18 +19,15 @@ export default function VerifyPage() {
 
     async function verify() {
       try {
-        // The API route handles the redirect — we use fetch to check the result
         const res = await fetch(`/api/auth/verify?token=${encodeURIComponent(token ?? "")}`, {
           redirect: "follow",
         });
 
         if (res.redirected) {
-          // The API redirected — check where it landed
           const url = new URL(res.url);
           if (url.searchParams.get("verified") === "true") {
             setStatus("success");
             setMessage("Akaun anda telah berjaya disahkan!");
-            // Auto-redirect to login after 2 seconds
             setTimeout(() => {
               window.location.href = "/auth/login?verified=true";
             }, 2000);
@@ -132,5 +129,24 @@ export default function VerifyPage() {
         </>
       )}
     </div>
+  );
+}
+
+export default function VerifyPage() {
+  return (
+    <Suspense fallback={
+      <div className="rounded-2xl border border-white/10 bg-white/5 p-8 shadow-2xl backdrop-blur-md text-center">
+        <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center">
+          <svg className="h-10 w-10 animate-spin text-johor-gold" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+          </svg>
+        </div>
+        <h2 className="mb-3 font-heading text-xl font-semibold text-white">Mengesahkan Akaun</h2>
+        <p className="text-sm text-white/60">Sedang mengesahkan akaun anda…</p>
+      </div>
+    }>
+      <VerifyContent />
+    </Suspense>
   );
 }

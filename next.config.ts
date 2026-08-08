@@ -12,10 +12,8 @@ const nextConfig: NextConfig = {
   },
   // Allow Cloudflare Tunnel domains for dev
   allowedDevOrigins: ["*.trycloudflare.com"],
-  // Ensure Next.js does not expose env vars prefixed without NEXT_PUBLIC_
-  experimental: {
-    serverComponentsExternalPackages: ["@prisma/client", "bcryptjs"],
-  },
+  // External packages that should not be bundled (Next.js 15)
+  serverExternalPackages: ["@prisma/client", "bcryptjs"],
 };
 
 export default nextConfig;

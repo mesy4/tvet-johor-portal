@@ -85,7 +85,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     // Embed role into JWT token on sign-in
     async jwt({ token, user }) {
       if (user) {
-        token.id   = user.id;
+        token.id   = user.id!;
         token.role = (user as { role: UserRole }).role;
       }
       return token;
@@ -119,9 +119,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           .catch(() => {});
       }
     },
-    async signOut({ token }) {
-      // token is a JWT object on signOut
-      const userId = (token as { id?: string } | null)?.id;
+    async signOut(params) {
+      // @ts-ignore — NextAuth v5 types vary; token exists at runtime
+      const token = (params as { token?: { id?: string } }).token;
+      const userId = token?.id;
       if (userId) {
         await prisma.auditLog
           .create({

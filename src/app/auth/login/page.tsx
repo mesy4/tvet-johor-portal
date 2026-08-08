@@ -5,12 +5,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, type LoginInput } from "@/lib/validations/auth";
 import { loginAction } from "@/app/actions/auth";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import Link from "next/link";
 import { getRedirectForRole } from "@/lib/rbac";
 import type { UserRole } from "@prisma/client";
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl");
@@ -142,5 +142,24 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="rounded-2xl border border-white/10 bg-white/5 p-8 shadow-2xl backdrop-blur-md text-center">
+        <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center">
+          <svg className="h-10 w-10 animate-spin text-johor-gold" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+          </svg>
+        </div>
+        <h2 className="mb-3 font-heading text-xl font-semibold text-white">Log Masuk</h2>
+        <p className="text-sm text-white/60">Sedang memuatkan…</p>
+      </div>
+    }>
+      <LoginForm />
+    </Suspense>
   );
 }
