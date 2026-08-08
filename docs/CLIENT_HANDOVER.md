@@ -213,9 +213,9 @@
 
 | Role | Email | Password |
 |---|---|---|
-| Superadmin | superadmin@tvetjohor.gov.my | Admin@TVET2025! |
-| ADTEC Admin | admin@adtecpg.edu.my | Admin@ADTEC2025! |
-| JTDC Admin | admin@jtdc.johor.gov.my | Admin@JTDC2025! |
+| Superadmin | superadmin@tvetjohor.gov.my | Redacted |
+| ADTEC Admin | admin@adtecpg.edu.my | Redacted |
+| JTDC Admin | admin@jtdc.johor.gov.my | Redacted |
 
 > WARNING: Change these passwords upon handover.
 
