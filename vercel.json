@@ -5,6 +5,5 @@
   "regions": ["sin1"],
   "env": {
     "NEXTAUTH_URL": "https://your-project.vercel.app"
-  },
-  "ignoreCommand": "npx turbo-ignore"
+  }
 }
