@@ -88,7 +88,7 @@ export function PartnersSection() {
                   alt={partner.name}
                   width={160}
                   height={64}
-                  className="max-h-12 w-auto object-contain brightness-0 invert opacity-70 transition-opacity hover:opacity-100 sm:max-h-16"
+                  className="max-h-12 w-auto object-contain opacity-90 transition-opacity hover:opacity-100 sm:max-h-16"
                   loading="lazy"
                 />
               </li>
