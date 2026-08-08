@@ -10,12 +10,8 @@ const PARTNERS = [
     logo: "/images/partners/kerajaan-johor-logo.svg",
   },
   {
-    name: "ADTEC JTM Kampus Pasir Gudang",
-    logo: "/images/partners/adtec-logo.svg",
-  },
-  {
-    name: "Johor Talent Development Council (JTDC)",
-    logo: "/images/partners/jtdc-logo.svg",
+    name: "Kementerian Sumber Manusia (KESUMA)",
+    logo: "/images/partners/kesuma-logo.svg",
   },
   {
     name: "Jabatan Tenaga Manusia (JTM)",
@@ -24,6 +20,18 @@ const PARTNERS = [
   {
     name: "Jabatan Pembangunan Kemahiran (JPK)",
     logo: "/images/partners/jpk-logo.svg",
+  },
+  {
+    name: "Perbadanan Tabung Pembangunan Kemahiran (PTPK)",
+    logo: "/images/partners/ptpk-logo.svg",
+  },
+  {
+    name: "Johor Talent Development Council (JTDC)",
+    logo: "/images/partners/jtdc-logo.svg",
+  },
+  {
+    name: "ADTEC JTM Kampus Pasir Gudang",
+    logo: "/images/partners/adtec-logo.svg",
   },
 ] as const;
 

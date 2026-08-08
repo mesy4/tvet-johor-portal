@@ -1,5 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80" fill="none">
-  <rect width="200" height="80" rx="8" fill="#003366"/>
-  <text x="100" y="45" text-anchor="middle" fill="#F5C518" font-family="Arial,sans-serif" font-size="14" font-weight="bold">ADTEC</text>
-  <text x="100" y="62" text-anchor="middle" fill="#ffffff" font-family="Arial,sans-serif" font-size="9">Pasir Gudang</text>
+  <rect width="200" height="80" rx="6" fill="#003366"/>
+  <path d="M25 25 L55 25 L40 50 Z" fill="#F5C518"/>
+  <rect x="35" y="52" width="10" height="12" rx="2" fill="#ffffff"/>
+  <text x="75" y="36" fill="#ffffff" font-family="Arial,sans-serif" font-size="13" font-weight="bold">ADTEC</text>
+  <text x="75" y="53" fill="#F5C518" font-family="Arial,sans-serif" font-size="9" font-weight="bold">Pasir Gudang</text>
 </svg>
