@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description: "Berita terkini, pengumuman, acara, dan sorotan daripada ekosistem TVET Negeri Johor.",
 };
 
-export const revalidate = 300; // ISR every 5 minutes
+export const dynamic = "force-dynamic";
 
 export default async function BeritaPage() {
   const articles = await prisma.news.findMany({

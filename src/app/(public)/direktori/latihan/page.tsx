@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description: "Cari program latihan kemahiran TVET terkini di Johor daripada pusat latihan bertauliah.",
 };
 
-export const revalidate = 300;
+export const dynamic = "force-dynamic";
 
 export default async function DirektoriLatihanPage() {
   const programs = await prisma.trainingProgram.findMany({

@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: "Direktori pusat latihan TVET bertauliah di Johor termasuk ADTEC, institut kemahiran, dan penyedia latihan.",
 };
 
-export const revalidate = 600;
+export const dynamic = "force-dynamic";
 
 export default async function DirektoriPusatLatihanPage() {
   const providers = await prisma.providerProfile.findMany({

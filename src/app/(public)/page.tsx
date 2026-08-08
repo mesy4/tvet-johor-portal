@@ -14,8 +14,8 @@ export const metadata: Metadata = {
     "Portal Rasmi TVET Negeri Johor — menghubungkan bakat, industri, dan penyedia latihan untuk membangunkan ekosistem kemahiran negeri.",
 };
 
-// Revalidate the home page every 10 minutes (ISR)
-export const revalidate = 600;
+// Force dynamic rendering — DB not available at build time on Vercel
+export const dynamic = "force-dynamic";
 
 export default function HomePage() {
   return (

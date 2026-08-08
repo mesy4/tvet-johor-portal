@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description: "Cari peluang pekerjaan dan jawatan kosong terkini di Johor untuk graduan TVET.",
 };
 
-export const revalidate = 300;
+export const dynamic = "force-dynamic";
 
 export default async function DirektoriKerjaPage() {
   const vacancies = await prisma.vacancy.findMany({
