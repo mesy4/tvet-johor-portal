@@ -1,13 +1,14 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { PrismaAdapter } from "@auth/prisma-adapter";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { loginSchema } from "@/lib/validations/auth";
 import type { UserRole } from "@prisma/client";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  adapter: PrismaAdapter(prisma),
+  // NOTE: No PrismaAdapter — using JWT-only sessions with CredentialsProvider.
+  // An adapter would require OAuth providers and causes "InvalidProvider" errors
+  // when only CredentialsProvider is configured.
 
   // ── Session strategy ──────────────────────────────────────
   // JWT is required when using Credentials provider
