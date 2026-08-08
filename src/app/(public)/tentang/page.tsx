@@ -2,8 +2,8 @@ import { GraduationCap, Briefcase, Building2, Target, Users, Award } from "lucid
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Tentang Kami — TVET Negeri Johor",
-  description: "Ketahui lebih lanjut mengenai TVET Negeri Johor, visi, misi, dan peranan kami dalam membangunkan ekosistem kemahiran negeri.",
+  title: "Tentang Kami — Sekretariat TVET Negeri Johor",
+  description: "Ketahui lebih lanjut mengenai Sekretariat TVET Negeri Johor, visi, misi, dan peranan kami dalam membangunkan ekosistem kemahiran negeri.",
 };
 
 const HIGHLIGHTS = [

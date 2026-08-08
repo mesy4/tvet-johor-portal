@@ -4,7 +4,7 @@ import { MapPin, Briefcase, Clock, Banknote } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Carian Peluang Kerja — TVET Negeri Johor",
+  title: "Carian Peluang Kerja — Sekretariat TVET Negeri Johor",
   description: "Cari peluang pekerjaan dan jawatan kosong terkini di Johor untuk graduan TVET.",
 };
 

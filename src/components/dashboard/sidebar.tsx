@@ -36,7 +36,7 @@ export function DashboardSidebar({ userRole, userName, userEmail }: DashboardSid
         </div>
         {!collapsed && (
           <div className="min-w-0">
-            <p className="truncate font-heading text-sm font-bold text-johor-navy-700">TVET Johor</p>
+            <p className="truncate font-heading text-sm font-bold text-johor-navy-700">Sekretariat TVET Johor</p>
             <span className={cn("rounded-full px-2 py-0.5 text-[10px] font-semibold", roleDisplay.color)}>
               {roleDisplay.label}
             </span>

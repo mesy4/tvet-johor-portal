@@ -53,7 +53,7 @@ export function Header() {
         scrolled ? "border-gray-100 bg-gray-50 text-gray-500" : "border-white/10 bg-johor-navy-700 text-white/70"
       )}>
         <div className="container mx-auto flex items-center justify-between px-4">
-          <span>Portal Rasmi TVET Negeri Johor | ADTEC JTM Kampus Pasir Gudang &amp; JTDC</span>
+          <span>Portal Rasmi Sekretariat TVET Negeri Johor | ADTEC JTM Kampus Pasir Gudang &amp; JTDC</span>
           <span>📞 +607-000 0000 &nbsp;|&nbsp; ✉ info@tvetjohor.gov.my</span>
         </div>
       </div>
@@ -61,7 +61,7 @@ export function Header() {
       {/* ── Main nav ─────────────────────────────────────── */}
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-3" aria-label="Laman Utama TVET Johor">
+        <Link href="/" className="flex items-center gap-3" aria-label="Laman Utama Sekretariat TVET Johor">
           <div className={cn(
             "flex h-10 w-10 items-center justify-center rounded-lg font-heading font-bold text-sm",
             scrolled
@@ -75,7 +75,7 @@ export function Header() {
               "font-heading text-base font-bold leading-tight",
               scrolled ? "text-johor-navy-500" : "text-white"
             )}>
-              TVET Negeri Johor
+              Sekretariat TVET Johor
             </p>
             <p className={cn(
               "text-xs leading-tight",

@@ -3,7 +3,7 @@ import { MapPin, Building2, Globe, Phone, Award } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Pusat Latihan — TVET Negeri Johor",
+  title: "Pusat Latihan — Sekretariat TVET Negeri Johor",
   description: "Direktori pusat latihan TVET bertauliah di Johor termasuk ADTEC, institut kemahiran, dan penyedia latihan.",
 };
 

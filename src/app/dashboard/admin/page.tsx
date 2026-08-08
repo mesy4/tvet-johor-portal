@@ -52,7 +52,7 @@ export default async function AdminDashboardPage() {
     <div className="space-y-8">
       <div>
         <h1 className="font-heading text-2xl font-bold text-gray-900">Papan Pemuka Admin</h1>
-        <p className="mt-1 text-sm text-gray-500">Ringkasan sistem portal TVET Johor</p>
+        <p className="mt-1 text-sm text-gray-500">Ringkasan sistem portal Sekretariat TVET Johor</p>
       </div>
 
       {/* ── Stats grid ──────────────────────────────────────── */}

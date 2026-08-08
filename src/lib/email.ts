@@ -48,13 +48,13 @@ export async function sendVerificationEmail(
   const html = `
     <div style="max-width:600px;margin:0 auto;font-family:Arial,sans-serif;color:#1a2a4a;">
       <div style="background:#0a1f3f;padding:24px;text-align:center;border-radius:12px 12px 0 0;">
-        <h1 style="color:#d4a843;margin:0;font-size:22px;">TVET Negeri Johor</h1>
+        <h1 style="color:#d4a843;margin:0;font-size:22px;">Sekretariat TVET Negeri Johor</h1>
       </div>
       <div style="background:#ffffff;padding:32px;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 12px 12px;">
         <h2 style="color:#0a1f3f;margin-top:0;">Sahkan Emel Anda</h2>
         <p style="line-height:1.6;">Salam sejahtera <strong>${name}</strong>,</p>
         <p style="line-height:1.6;">
-          Terima kasih kerana mendaftar di Portal TVET Negeri Johor.
+          Terima kasih kerana mendaftar di Portal Sekretariat TVET Negeri Johor.
           Sila klik butang di bawah untuk mengesahkan alamat emel anda:
         </p>
         <div style="text-align:center;margin:28px 0;">
@@ -80,7 +80,7 @@ export async function sendVerificationEmail(
   `;
 
   try {
-    const info = await transport.sendMail({ from, to, subject: "Sahkan Emel — Portal TVET Negeri Johor", html });
+    const info = await transport.sendMail({ from, to, subject: "Sahkan Emel — Portal Sekretariat TVET Negeri Johor", html });
     // jsonTransport logs the email content to console in dev
     if (typeof info === "object" && info !== null && "message" in info) {
       console.log("[email] Verification email content:", (info as unknown as { message: string }).message);

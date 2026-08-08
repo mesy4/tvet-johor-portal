@@ -27,7 +27,7 @@ export default function AuthLayout({
             <span className="text-3xl">🇲🇾</span>
           </div>
           <h1 className="font-heading text-2xl font-bold text-white">
-            Laman Web TVET Negeri Johor
+            Sekretariat TVET Negeri Johor
           </h1>
           <p className="mt-1 text-sm text-white/70">
             ADTEC JTM Kampus Pasir Gudang &amp; JTDC

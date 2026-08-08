@@ -4,7 +4,7 @@ import { MapPin, GraduationCap, Calendar, Clock, Users } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Program Latihan — TVET Negeri Johor",
+  title: "Program Latihan — Sekretariat TVET Negeri Johor",
   description: "Cari program latihan kemahiran TVET terkini di Johor daripada pusat latihan bertauliah.",
 };
 

@@ -38,10 +38,10 @@ export function Footer() {
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10 font-heading font-bold text-sm">
                 TVET
               </div>
-              <span className="font-heading text-base font-bold">TVET Johor</span>
+              <span className="font-heading text-base font-bold">Sekretariat TVET Johor</span>
             </div>
             <p className="text-sm leading-relaxed text-white/60">
-              Portal rasmi penyelarasan TVET Negeri Johor — menghubungkan bakat,
+              Portal rasmi Sekretariat TVET Negeri Johor — menghubungkan bakat,
               industri, dan penyedia latihan.
             </p>
             <div className="mt-5 space-y-1 text-sm text-white/50">
@@ -79,7 +79,7 @@ export function Footer() {
       {/* Bottom bar */}
       <div className="container mx-auto flex flex-col items-center justify-between gap-3 px-4 py-5 text-xs text-white/40 sm:flex-row">
         <p>
-          © {new Date().getFullYear()} Laman Web TVET Negeri Johor. Hak Cipta Terpelihara.
+          © {new Date().getFullYear()} Sekretariat TVET Negeri Johor. Hak Cipta Terpelihara.
         </p>
         <p>
           Dibangunkan oleh ADTEC JTM Kampus Pasir Gudang &amp; Johor Talent Development Council

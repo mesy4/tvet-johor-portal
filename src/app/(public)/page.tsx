@@ -9,9 +9,9 @@ import { InquiryForm }      from "@/components/home/inquiry-form";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Laman Web TVET Negeri Johor",
+  title: "Sekretariat TVET Negeri Johor",
   description:
-    "Portal Rasmi TVET Negeri Johor — menghubungkan bakat, industri, dan penyedia latihan untuk membangunkan ekosistem kemahiran negeri.",
+    "Portal Rasmi Sekretariat TVET Negeri Johor — menghubungkan bakat, industri, dan penyedia latihan untuk membangunkan ekosistem kemahiran negeri.",
 };
 
 // Force dynamic rendering — DB not available at build time on Vercel

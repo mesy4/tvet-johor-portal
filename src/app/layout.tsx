@@ -16,17 +16,17 @@ const plusJakarta = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = {
   title: {
-    default: "Laman Web TVET Negeri Johor",
-    template: "%s | TVET Johor",
+    default: "Sekretariat TVET Negeri Johor",
+    template: "%s | Sekretariat TVET Johor",
   },
   description:
-    "Portal Rasmi TVET Negeri Johor — menghubungkan bakat, industri, dan penyedia latihan untuk membangunkan ekosistem kemahiran negeri.",
+    "Portal Rasmi Sekretariat TVET Negeri Johor — menghubungkan bakat, industri, dan penyedia latihan untuk membangunkan ekosistem kemahiran negeri.",
   keywords: ["TVET", "Johor", "ADTEC", "JTDC", "Latihan Teknikal", "Vokasional", "Kemahiran"],
   authors: [{ name: "ADTEC JTM Kampus Pasir Gudang" }],
   openGraph: {
     type: "website",
     locale: "ms_MY",
-    siteName: "Laman Web TVET Negeri Johor",
+    siteName: "Sekretariat TVET Negeri Johor",
   },
 };
 

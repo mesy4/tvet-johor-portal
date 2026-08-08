@@ -61,7 +61,7 @@ export function RoleGateway() {
             Pilih Peranan Anda
           </h2>
           <p className="mt-3 text-gray-500">
-            Portal TVET Johor melayani pelbagai pengguna — pilih kategori yang bersesuaian untuk bermula.
+            Portal Sekretariat TVET Johor melayani pelbagai pengguna — pilih kategori yang bersesuaian untuk bermula.
           </p>
         </div>
 

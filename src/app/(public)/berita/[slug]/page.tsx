@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   return {
-    title: `${article.title} — TVET Negeri Johor`,
+    title: `${article.title} — Sekretariat TVET Negeri Johor`,
     description: article.excerpt ?? undefined,
   };
 }

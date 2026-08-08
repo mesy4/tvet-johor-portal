@@ -3,7 +3,7 @@ import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Hubungi Kami — TVET Negeri Johor",
+  title: "Hubungi Kami — Sekretariat TVET Negeri Johor",
   description: "Hubungi pasukan TVET Negeri Johor. Kami sedia membantu sebarang pertanyaan anda.",
 };
 

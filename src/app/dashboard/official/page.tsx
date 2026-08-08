@@ -68,7 +68,7 @@ export default async function OfficialDashboardPage() {
     <div className="space-y-8">
       <div>
         <h1 className="font-heading text-2xl font-bold text-gray-900">
-          Dashboard Analitik TVET Johor
+          Dashboard Analitik Sekretariat TVET Johor
         </h1>
         <p className="mt-1 text-sm text-gray-500">
           Paparan baca sahaja — data ekosistem TVET negeri Johor

@@ -100,7 +100,7 @@ async function main() {
 
   // ── System Settings ──────────────────────────────────────────
   const settings = [
-    { key: "site_name", value: "Laman Web TVET Negeri Johor", description: "Portal name displayed in header" },
+    { key: "site_name", value: "Sekretariat TVET Negeri Johor", description: "Portal name displayed in header" },
     { key: "site_tagline", value: "Membangunkan Kemahiran. Memperkasa Johor.", description: "Hero section tagline" },
     { key: "contact_email", value: "info@tvetjohor.gov.my", description: "Public contact email" },
     { key: "contact_phone", value: "+607-000 0000", description: "Public contact phone" },

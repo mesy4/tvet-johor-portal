@@ -67,7 +67,7 @@ export function PartnersSection() {
           </h2>
           <div className="mx-auto mt-3 h-1 w-16 rounded-full bg-johor-red-500" />
           <p className="mt-4 text-white/60">
-            Organisasi dan agensi yang bekerjasama dalam ekosistem TVET Johor.
+            Organisasi dan agensi yang bekerjasama dalam ekosistem Sekretariat TVET Johor.
           </p>
         </div>
 

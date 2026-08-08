@@ -4,8 +4,8 @@ import { formatDate } from "@/lib/utils";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Berita & Sorotan — TVET Negeri Johor",
-  description: "Berita terkini, pengumuman, acara, dan sorotan daripada ekosistem TVET Negeri Johor.",
+  title: "Berita & Sorotan — Sekretariat TVET Negeri Johor",
+  description: "Berita terkini, pengumuman, acara, dan sorotan daripada ekosistem Sekretariat TVET Negeri Johor.",
 };
 
 export const dynamic = "force-dynamic";
@@ -47,7 +47,7 @@ export default async function BeritaPage() {
           <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-johor-red-500">Berita & Sorotan</p>
           <h1 className="font-heading text-4xl font-bold text-johor-navy-700">Berita & Sorotan</h1>
           <p className="mt-3 text-gray-500">
-            Berita terkini, pengumuman, dan sorotan daripada ekosistem TVET Negeri Johor.
+            Berita terkini, pengumuman, dan sorotan daripada ekosistem Sekretariat TVET Negeri Johor.
           </p>
         </div>
 

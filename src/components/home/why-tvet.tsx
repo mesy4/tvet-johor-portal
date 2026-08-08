@@ -19,7 +19,7 @@ const REASONS = [
   {
     icon:  Users,
     title: "Kebolehpasaran Tinggi",
-    desc:  "Lebih 85% graduan TVET Johor mendapat pekerjaan dalam tempoh 6 bulan selepas tamat pengajian.",
+    desc:  "Lebih 85% graduan Sekretariat TVET Johor mendapat pekerjaan dalam tempoh 6 bulan selepas tamat pengajian.",
   },
 ];
 
